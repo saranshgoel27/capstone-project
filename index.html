@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Task Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 20px;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    input {
+      width: calc(100% - 100px);
+      padding: 10px;
+      border-radius: 3px;
+      border: 1px solid #ddd;
+    }
+    button {
+      padding: 10px;
+      margin-left: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      border: 1px solid #eee;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9f9f9;
+    }
+    .delete {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .delete:hover {
+      background-color: #b02a37;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Task Tracker</h1>
+    <input type="text" id="taskInput" placeholder="Enter a task">
+    <button id="addButton">Add Task</button>
+    <ul id="taskList"></ul>
+  </div>
+  <script>
+    // Task handling
+    const addButton = document.getElementById("addButton");
+    const taskInput = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
+
+    addButton.addEventListener("click", () => {
+      const task = taskInput.value.trim();
+      if (task) {
+        // Create list item
+        const li = document.createElement("li");
+        li.innerHTML = `${task} <button class="delete">Delete</button>`;
+        taskList.appendChild(li);
+
+        // Add click event for deletion
+        li.lastElementChild.addEventListener("click", () => {
+          li.remove();
+        });
+
+        // Clear input field
+        taskInput.value = "";
+      } else {
+        alert("Please enter a task!");
+      }
+    });
+  </script>
+</body>
+</html>
