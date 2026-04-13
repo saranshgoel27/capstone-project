@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness Tracker Web App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    .container {
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .summary {
+      margin-top: 15px;
+    }
+    .summary p {
+      margin: 5px 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Fitness Tracker</h1>
+
+<div class="container">
+  <form id="goal-form">
+    <h2>Set Your Fitness Goal</h2>
+    <input type="text" id="goal-input" placeholder="e.g., Run 50 miles" required>
+    <button type="submit">Save Goal</button>
+  </form>
+
+  <form id="progress-form">
+    <h2>Log Daily Progress</h2>
+    <input type="number" id="progress-input" placeholder="Progress (e.g., 5 miles)" required>
+    <button type="submit">Log Progress</button>
+  </form>
+
+  <div class="summary">
+    <h3>Progress Summary</h3>
+    <p>Goal: <span id="goal-summary">None</span></p>
+    <p>Total Days Logged: <span id="days-logged">0</span></p>
+    <p>Total Progress: <span id="total-progress">0</span></p>
+  </div>
+</div>
+
+<script>
+  const goalForm = document.getElementById('goal-form');
+  const progressForm = document.getElementById('progress-form');
+  const goalInput = document.getElementById('goal-input');
+  const progressInput = document.getElementById('progress-input');
+  const goalSummary = document.getElementById('goal-summary');
+  const daysLogged = document.getElementById('days-logged');
+  const totalProgress = document.getElementById('total-progress');
+
+  const GOAL_KEY = 'fitnessGoal';
+  const PROGRESS_KEY = 'fitnessProgress';
+
+  let savedGoal = localStorage.getItem(GOAL_KEY) || 'None';
+  let progressData = JSON.parse(localStorage.getItem(PROGRESS_KEY)) || [];
+
+  goalSummary.textContent = savedGoal;
+  daysLogged.textContent = progressData.length;
+  totalProgress.textContent = progressData.reduce((sum, val) => sum + val, 0);
+
+  goalForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const goal = goalInput.value.trim();
+    if (goal) {
+      savedGoal = goal;
+      localStorage.setItem(GOAL_KEY, savedGoal);
+      goalSummary.textContent = savedGoal;
+      goalInput.value = '';
+    }
+  });
+
+  progressForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const progress = parseFloat(progressInput.value.trim());
+    if (!isNaN(progress) && progress > 0) {
+      progressData.push(progress);
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressData));
+      daysLogged.textContent = progressData.length;
+      totalProgress.textContent = progressData.reduce((sum, val) => sum + val, 0);
+      progressInput.value = '';
+    }
+  });
+</script>
+
+</body>
+</html>
